@@ -57,7 +57,7 @@
 //第一个字段是ip 第二个字段是主机名
 ```
 
-​	**修改作用：用于三台机器的映射，从而三台机器达到简单就可以通讯的功能**
+​	**修改作用：用于三台机器的映射，从而三台机器达到简单通讯的功能**
 
 ### 免密登录
 
@@ -237,12 +237,64 @@ source /etc/profile
      hadoop03
      ```
 
-     **至此，安装Hadoop完成**
+#### 5.远程拷贝到其他虚拟机
+
+```bash
+//进入软件包所在目录
+scp jdk root@hadoop02:/export/servers
+scp jdk root@hadoop03:/export/servers
+
+
+scp hadoop root@hadoop02:/export/servers
+scp hadoop root@hadoop03:/export/servers
+```
+
+#### 6. 格式化HDFS分布式文件系统
+
+```js
+hadoop namenode -format
+```
+
+#### 7.  启动节点
+
+**启动HDFS进程**
+
+```bash
+start-dfs.sh
+```
+
+**启动yarn进程**
+
+```bash
+start-yarn.sh
+```
+
+#### 8. 查看节点
+
+```js
+jps
+```
+
+各节点的hadoop进程及角色如下：
+
+| 节点名称 | HDFS                                                    | Yarn                                                  |
+| -------- | ------------------------------------------------------- | ----------------------------------------------------- |
+| hadoop01 | HDFS主节点(Namenode)    HDFS从节点(DataNode)            | Yarn从节点(NodeManager)                               |
+| hadoop02 | HDFS助理节点(SecondaryNamenode)    HDFS从节点(Datanode) | Yarn从节点(NOdeManager)                               |
+| hadoop03 | HDFS从节点                                              | Yarn主节点(ResourceManage)    Yarn从节点(Nodemanager) |
+
+**至此，安装Hadoop完成**
 
 #### 关闭防火墙
 
 ```bash
 systemctl stop firewalld
 systemctl disable firewalld
+```
+
+#### 9. 访问
+
+```
+http://hadoop01:50070
 ```
 
